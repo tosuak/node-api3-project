@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:id', validateUserId, (req, res, next) => {
-  User.getById(req.user)
+  User.getById(req.params.id)
     .then(user => {
       res.json(user);
     })
@@ -31,7 +31,7 @@ router.post('/', validateUser, (req, res, next) => {
 });
 
 router.put('/:id', validateUserId, validateUser, (req, res, next) => {
-  User.update(req.user, req.body)
+  User.update(req.params.id, req.body)
     .then(updatedUser => {
       res.json(updatedUser)
     })
@@ -39,9 +39,9 @@ router.put('/:id', validateUserId, validateUser, (req, res, next) => {
 });
 
 router.delete('/:id', validateUserId, (req, res, next) => {
-  User.remove(req.user)
-    .then(removedUser => {
-      
+  User.remove(req.params.id)
+    .then(user => {
+      res.json(req.user)
     })
     .catch(next)
 });

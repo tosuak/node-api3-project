@@ -7,23 +7,22 @@ function logger(req, res, next) {
 }
 
 function validateUserId(req, res, next) {
-  let id = req.params.id;
-  
-  User.getById(id)
+  User.getById(req.params.id)
     .then(id => {
       if (!id) {
         res.status(404).json({ message: 'user not found' });
-      } 
-    })
+      } else {
+      req.user = id;
+    }
+  }) 
     .catch(err => console.log(err))
 
-  req.user = id;
   next();
 }
 
 function validateUser(req, res, next) {
   const { name } = req.body;
-  if (!name) {
+  if (!name || !name.trim()) {
     res.status(400).json({ message: 'missing required name field' });
   }
   next();
